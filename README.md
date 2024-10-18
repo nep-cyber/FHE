@@ -1,4 +1,4 @@
-Improved FHE Bootstrapping and Its Applications in Privacy Preserving Inference of Discretized Neural Networks
+Improved FHE Bootstrapping and Its Applications in Discretized Neural Networks
 =====================================
 
 
