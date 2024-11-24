@@ -4,20 +4,15 @@
 using namespace lbcrypto;
 
 int main() {
-    // Sample Program: Step 1: Set CryptoContext
-    
-   // cc.GenerateBinFHEContext(P128G, XZDDF);
     int right_times=0;
     int cyc_times=100;
     int m0=1;
     int m1=1;
     LWEPlaintext result;
-    // Sample Program: Step 2: Key Generation
     for(int i=0;i<cyc_times;i++)
     {
         auto cc = BinFHEContext();
         cc.GenerateBinFHEContext(N128G, XZNEW);
-        // cc.GenerateBinFHEContext(P128G, XZDDF);
         auto sk = cc.KeyGen();
         cc.NBTKeyGen(sk);
         auto ct1 = cc.Encrypt(sk, m0);
