@@ -758,24 +758,30 @@ NTRUCiphertext BinFHEScheme::BootstrapGateCore(const std::shared_ptr<BinFHECrypt
         polym.SetFormat(EVALUATION);
     }
    
-//     // 
-   //  uint32_t factor = (2 * N / q.ConvertToInt());
-   //  NativeInteger azero = ct->GetA()[0];
-   //  //std::cout << "a0=" << azero << std::endl;
-   //  uint32_t wzero = factor * azero.ConvertToInt() + 1;
-   // // std::cout << "wzero=" << wzero << std::endl;
-   //  uint32_t invw = ModInverse(wzero, 2 * N) % (2 * N);
-   // // std::cout << "invw=" << invw << std::endl;
-   //  auto polym2{polym.AutomorphismTransform(invw)};  
-//     // 
+    uint32_t intq=q.ConvertToInt();
+    // cout<<"q="<<q<<endl;
+    if(intq==1024){
+        //xbw
+        uint32_t factor = (2 * N / q.ConvertToInt());
+        NativeInteger azero = ct->GetA()[0];
+        // std::cout << "a0=" << azero << std::endl;
+        uint32_t wzero = factor * azero.ConvertToInt() + 1;
+    // std::cout << "wzero=" << wzero << std::endl;
+        uint32_t invw = ModInverse(wzero, 2 * N) % (2 * N);
+    // std::cout << "invw=" << invw << std::endl;
+        auto polym2{polym.AutomorphismTransform(invw)};  
+        //xbw
+        // xzddf
+        auto acc = std::make_shared<NTRUCiphertextImpl>(std::move(polym2));
+        NACCscheme->EvalAcc(NTRUParams, ek, acc, ct->GetA(),f);
+        return acc;
+    }
     
-    //xzddf
-     // auto acc = std::make_shared<NTRUCiphertextImpl>(std::move(polym2));
-    //xznew
-    auto acc = std::make_shared<NTRUCiphertextImpl>(std::move(polym));
-
-    NACCscheme->EvalAcc(NTRUParams, ek, acc, ct->GetA(),f);
-    return acc;
+    else{    //xznew
+        auto acc = std::make_shared<NTRUCiphertextImpl>(std::move(polym));
+        NACCscheme->EvalAcc(NTRUParams, ek, acc, ct->GetA(),f);
+        return acc;
+    }
 }
 
 
